@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Panel de enlaces</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--bg: #eaf7ff;
+			--bg-accent: #88d5f7;
+			--surface: rgba(247, 253, 255, 0.84);
+			--surface-strong: #f9fdff;
+			--line: rgba(22, 93, 132, 0.14);
+			--text: #07314a;
+			--muted: #4c6e81;
+			--shadow: 0 24px 60px rgba(18, 89, 132, 0.16);
+			--card-shadow: 0 18px 40px rgba(16, 93, 142, 0.12);
+			--radius-xl: 32px;
+			--radius-lg: 24px;
+			--radius-md: 18px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: "DM Sans", sans-serif;
+			color: var(--text);
+			background:
+				radial-gradient(circle at top left, rgba(255, 255, 255, 0.86), transparent 28%),
+				radial-gradient(circle at bottom right, rgba(123, 214, 243, 0.32), transparent 24%),
+				linear-gradient(145deg, #effaff 0%, #d8f1fb 42%, #c6e8f7 100%);
+			position: relative;
+			overflow-x: hidden;
+		}
+
+		body::before,
+		body::after {
+			content: "";
+			position: fixed;
+			border-radius: 999px;
+			filter: blur(24px);
+			opacity: 0.65;
+			pointer-events: none;
+		}
+
+		body::before {
+			width: 240px;
+			height: 240px;
+			top: -70px;
+			right: -40px;
+			background: rgba(88, 194, 234, 0.34);
+		}
+
+		body::after {
+			width: 280px;
+			height: 280px;
+			bottom: -100px;
+			left: -70px;
+			background: rgba(255, 255, 255, 0.56);
+		}
+
+		.shell {
+			width: min(1120px, calc(100% - 32px));
+			margin: 40px auto;
+			padding: 28px;
+			border: 1px solid rgba(255, 255, 255, 0.48);
+			border-radius: var(--radius-xl);
+			background: rgba(239, 250, 255, 0.56);
+			backdrop-filter: blur(18px);
+			box-shadow: var(--shadow);
+		}
+
+		.brand-strip {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 18px;
+			margin-bottom: 24px;
+		}
+
+		.brand-card {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 18px;
+			min-height: 122px;
+			border: 1px solid var(--line);
+			border-radius: var(--radius-lg);
+			background: var(--surface);
+			backdrop-filter: blur(10px);
+			box-shadow: var(--card-shadow);
+		}
+
+		.brand-card img {
+			max-width: 100%;
+			max-height: 72px;
+			object-fit: contain;
+		}
+
+		.hero {
+			display: grid;
+			grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.8fr);
+			gap: 24px;
+			align-items: stretch;
+			margin-bottom: 28px;
+		}
+
+		.hero-copy,
+		.hero-panel {
+			border: 1px solid var(--line);
+			border-radius: var(--radius-lg);
+			background: var(--surface);
+			backdrop-filter: blur(10px);
+		}
+
+		.hero-copy {
+			padding: 32px;
+		}
+
+		.eyebrow {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			margin-bottom: 18px;
+			padding: 8px 12px;
+			border-radius: 999px;
+			background: rgba(195, 234, 248, 0.9);
+			color: #0d5c85;
+			font-size: 0.84rem;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		h1 {
+			margin: 0;
+			font-family: "Space Grotesk", sans-serif;
+			font-size: clamp(2.3rem, 4vw, 4.4rem);
+			line-height: 0.95;
+			letter-spacing: -0.06em;
+		}
+
+		.hero-copy p {
+			margin: 18px 0 0;
+			max-width: 60ch;
+			color: var(--muted);
+			font-size: 1.05rem;
+			line-height: 1.7;
+		}
+
+		.hero-panel {
+			padding: 22px;
+			display: grid;
+			align-content: space-between;
+			gap: 18px;
+		}
+
+		.panel-visual {
+			display: grid;
+			gap: 14px;
+		}
+
+		.panel-visual img {
+			width: 100%;
+			height: auto;
+			max-height: 190px;
+			object-fit: contain;
+			padding: 12px;
+			border-radius: 20px;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(219, 243, 252, 0.9) 100%);
+		}
+
+		.panel-label {
+			color: var(--muted);
+			font-size: 0.92rem;
+			letter-spacing: 0.02em;
+		}
+
+		.panel-count {
+			font-family: "Space Grotesk", sans-serif;
+			font-size: clamp(3rem, 7vw, 4.6rem);
+			line-height: 0.9;
+		}
+
+		.panel-note {
+			padding-top: 18px;
+			border-top: 1px solid var(--line);
+			color: var(--muted);
+			line-height: 1.7;
+		}
+
+		.cards {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+			gap: 18px;
+		}
+
+		.card {
+			position: relative;
+			display: grid;
+			gap: 16px;
+			padding: 22px;
+			min-height: 220px;
+			border: 1px solid rgba(33, 118, 164, 0.12);
+			border-radius: var(--radius-md);
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(234, 248, 255, 0.94) 100%);
+			color: inherit;
+			text-decoration: none;
+			box-shadow: var(--card-shadow);
+			overflow: hidden;
+			transform: translateY(20px);
+			opacity: 0;
+			animation: rise 0.7s ease forwards;
+			transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+		}
+
+		.card:nth-child(2) { animation-delay: 0.08s; }
+		.card:nth-child(3) { animation-delay: 0.16s; }
+		.card:nth-child(4) { animation-delay: 0.24s; }
+		.card:nth-child(5) { animation-delay: 0.32s; }
+		.card:nth-child(6) { animation-delay: 0.4s; }
+
+		.card::before {
+			content: "";
+			position: absolute;
+			inset: auto -40px -55px auto;
+			width: 140px;
+			height: 140px;
+			border-radius: 50%;
+			background: radial-gradient(circle, rgba(136, 213, 247, 0.42), transparent 68%);
+			transition: transform 0.24s ease;
+		}
+
+		.card:hover,
+		.card:focus-visible {
+			transform: translateY(-6px);
+			box-shadow: 0 26px 40px rgba(21, 104, 150, 0.18);
+			border-color: rgba(44, 147, 201, 0.34);
+			outline: none;
+		}
+
+		.card:hover::before,
+		.card:focus-visible::before {
+			transform: scale(1.08);
+		}
+
+		.icon-wrap {
+			width: 60px;
+			height: 60px;
+			display: inline-grid;
+			place-items: center;
+			border-radius: 18px;
+			background: linear-gradient(180deg, #dff5ff 0%, #a9e2f7 100%);
+			color: #0b5f89;
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+		}
+
+		.icon-wrap svg {
+			width: 28px;
+			height: 28px;
+		}
+
+		.card h2 {
+			margin: 0;
+			font-family: "Space Grotesk", sans-serif;
+			font-size: 1.28rem;
+			letter-spacing: -0.04em;
+		}
+
+		.card p {
+			margin: 0;
+			color: var(--muted);
+			line-height: 1.65;
+		}
+
+		.card span {
+			margin-top: auto;
+			font-weight: 700;
+			color: #0b6c97;
+		}
+
+		@keyframes rise {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@media (max-width: 860px) {
+			.brand-strip {
+				grid-template-columns: 1fr;
+			}
+
+			.hero {
+				grid-template-columns: 1fr;
+			}
+		}
+
+		@media (max-width: 640px) {
+			.shell {
+				width: min(100% - 18px, 1120px);
+				margin: 12px auto;
+				padding: 16px;
+				border-radius: 22px;
+			}
+
+			.hero-copy,
+			.hero-panel,
+			.brand-card,
+			.card {
+				padding: 20px;
+			}
+
+			h1 {
+				font-size: 2.5rem;
+			}
+
+			.card {
+				min-height: 200px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="shell">
+		<section class="brand-strip" aria-label="Instituciones del programa ACV">
+			<div class="brand-card">
+				<img src="gs.png" alt="Logo GS">
+			</div>
+			<div class="brand-card">
+				<img src="msp.png" alt="Logo MSP">
+			</div>
+			
+		</section>
+
+		<section class="hero">
+			<div class="hero-copy">
+				<div class="eyebrow">Programa de salud ACV</div>
+				<h1>Portal de apoyo para el programa de ACV EN RED</h1>
+				<p>
+					Un espacio visual para centralizar accesos, recursos y rutas de trabajo del programa.
+					
+				</p>
+			</div>
+
+			<aside class="hero-panel">
+				<div class="panel-visual">
+					<img src="programa.png" alt="Programa de atencion ACV">
+					<div class="panel-label">Link del programa</div>
+					<div class="panel-count">08</div>
+				</div>
+				
+			</aside>
+		</section>
+
+		<section class="cards" aria-label="Lista de enlaces principales">
+			<a class="card" href="https://www.youtube.com/watch?v=kHuqHjQrxoQ&list=PLW-mAv46dkLs" aria-label="Acceso a protocolo de codigo ACV">
+				<div class="icon-wrap" aria-hidden="true">
+					<img src="brain.svg" alt="Protocolo de codigo ACV" width="28" height="28">
+				</div>
+				<h2>Capacitacion a Nodos Primarios</h2>
+				<p>Acceso a los distintos modulos de capacitacion del <strong>NODO PRIMARIO</strong></p>
+				<span>Enlace</span>
+			</a>
+			<a class="card" href="https://www.youtube.com/watch?v=KH4DxFLdN5w&list=PLThat-oHR5oQ" aria-label="Acceso a protocolo de codigo ACV">
+				<div class="icon-wrap" aria-hidden="true">
+					<img src="brain.svg" alt="Protocolo de codigo ACV" width="28" height="28">
+				</div>
+				<h2>Capacitacion a Nodos Secundarios</h2>
+				<p>Acceso a los distintos modulos de capacitacion del <strong>NODO SECUNDARIO</strong></p>
+				<span>Enlace</span>
+			</a>
+			<a class="card" href="https://gestionsanitaria.github.io/efectoresACV/" aria-label="Acceso a protocolo de codigo ACV">
+				<div class="icon-wrap" aria-hidden="true">
+					<img src="pin.svg" alt="Protocolo de codigo ACV" width="28" height="28">
+				</div>
+				<h2>GeoLocalizador de Nodos del Programa de ACV</h2>
+				<p>Acceso al buscador de los nodos primarios y su correspondencia con los nodos secundarios</p>
+				<span>Enlace</span>
+			</a>
+			<a class="card" href="https://play.google.com/store/apps/details?id=com.telestrokeApp" aria-label="Acceso a protocolo de codigo ACV">
+				<div class="icon-wrap" aria-hidden="true">
+					<img src="android.svg" alt="Protocolo de codigo ACV" width="28" height="28">
+				</div>
+				<h2>Aplicativo nodos primarios</h2>
+				<p>Acceso a la aplicacion del PROGRAMA DE ACV</p>
+				<span>Enlace</span>
+			</a>
+			<a class="card" href="https://drive.google.com/file/d/1mP2cULnDKNfg7hdxEqrvz1u9oQyapNTc/view?usp=sharing" aria-label="Acceso a protocolo de codigo ACV">
+				<div class="icon-wrap" aria-hidden="true">
+					<img src="book.svg" alt="Protocolo de codigo ACV" width="28" height="28">
+				</div>
+				<h2>Flujo ACV NODO PRIMARIO</h2>
+				<p>Acceso al circuito del nodo primario</p>
+				<span>Enlace</span>
+			</a>
+			<a class="card" href="https://drive.google.com/file/d/19uUNkGAadBe7lo7pc35-hEQWV4EpIeJj/view?usp=sharing">
+				<div class="icon-wrap" aria-hidden="true">
+					<img src="book.svg" alt="Protocolo de codigo ACV" width="28" height="28">
+				</div>
+				<h2>Flujo ACV NODO SECUNDARIO</h2>
+				<p>Acceso al circuito del nodo secundario</p>
+				<span>Enlace</span>
+			</a>
+			<a class="card" href="https://drive.google.com/drive/folders/1FMNdcAlmfgKBnVHHaQCmgkZUKIgmG27G?usp=sharing">
+				<div class="icon-wrap" aria-hidden="true">
+					<img src="book.svg" alt="Protocolo de codigo ACV" width="28" height="28">
+				</div>
+				<h2>Informacion complementaria</h2>
+				<p>Acceso al repositorio de archivos</p>
+				<span>Enlace</span>
+			</a>
+			<a class="card" href="https://gestionsanitaria.github.io/nihss/">
+				<div class="icon-wrap" aria-hidden="true">
+					<img src="calculadora.svg" alt="Protocolo de codigo ACV" width="28" height="28">
+				</div>
+				<h2>Calculadora NIHSS</h2>
+				<p>Acceso al aplicativo calculadora NIHSS</p>
+				<span>Enlace</span>
+			</a>
+			
+		</section>
+	</main>
+</body>
+</html>
